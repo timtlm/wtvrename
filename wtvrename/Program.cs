@@ -149,36 +149,19 @@ namespace wtvrename
             string seriesId = "0";
             XmlNode episode = null;
 
-            // If we don't have an episode name 
-            // we can only find an episode by air date
-            if (episodeName == null)
+            // Find episode by air date to get the series id
+            // If we have an episode name use that to find the episode in the series
+            // Otherwise we use the episode found by air date
+            // Sometimes there are multiple episodes for the same air date
+            foreach (XmlNode series in seriesList)
             {
-                foreach (XmlNode series in seriesList)
-                {
-                    seriesId = series.SelectSingleNode("seriesid").InnerText;
-                    episode = GetEpisodeByAirDate(seriesId, airDate);
+                seriesId = series.SelectSingleNode("seriesid").InnerText;
+                episode = GetEpisodeByAirDate(seriesId, airDate);
 
-                    if (episode != null)
-                    {
-                        break;
-                    }
-                }
-            }
-            // Find the series id by lookinig up the episode by air date
-            // Then find the episode by name
-            // (Sometimes there are multiple episodes for the same air date)
-            else
-            {
-                foreach (XmlNode series in seriesList)
+                if (episode != null && episodeName != null)
                 {
-                    seriesId = series.SelectSingleNode("seriesid").InnerText;
-                    episode = GetEpisodeByAirDate(seriesId, airDate);
-
-                    if (episode != null)
-                    {
-                        episode = GetEpisodeByName(seriesId, episodeName);
-                        break;
-                    }
+                    episode = GetEpisodeByName(seriesId, episodeName);
+                    break;
                 }
             }
 
