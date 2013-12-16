@@ -25,7 +25,7 @@ namespace wtvrename
 
         static void Main(string[] args)
         {
-            DumpLog();
+            // DumpLog();
             Log("---------START PROCESSING----------");
             RenameThem();
             Log("---------END PROCESSING------------");
@@ -160,7 +160,11 @@ namespace wtvrename
 
                 if (episode != null && episodeName != null)
                 {
-                    episode = GetEpisodeByName(seriesId, episodeName);
+                    XmlNode episodeByName = GetEpisodeByName(seriesId, episodeName);
+                    if (episodeByName != null)
+                    {
+                        episode = episodeByName;
+                    }
                     break;
                 }
             }
@@ -212,7 +216,7 @@ namespace wtvrename
             foreach (XmlNode e in episodeList)
             {
                 string eName = e.SelectSingleNode("EpisodeName").InnerText;
-                if (eName == episodeName)
+                if (String.Equals(eName, episodeName, StringComparison.OrdinalIgnoreCase))
                 {
                     return e;
                 }
