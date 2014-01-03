@@ -67,7 +67,7 @@ namespace wtvrename
                         if (seriesName == null)
                         {
                             Log("Skipping. Recording likely in progress.");
-                            break;
+                            continue;
                         }
 
                         //seriesName = "The Office";
